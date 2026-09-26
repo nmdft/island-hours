@@ -2,90 +2,158 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#143e43" />
-    <title>小岛渔事 · Island Hours</title>
-    <script type="module" crossorigin src="./assets/index-Drr9Z2ru.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DpxhTryN.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#142c35" />
+    <title>小岛渔事 · 五岛航行</title>
+    <script type="module" crossorigin src="./assets/index-CYpBGQgo.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Du2fz0iy.css">
   </head>
   <body>
-    <canvas id="world" aria-label="第一人称海岛钓鱼场景"></canvas>
+    <canvas id="world" tabindex="0" aria-label="海岛物理钓鱼场景"></canvas>
+    <div id="loading">正在装载海岛与物理世界……</div>
     <header>
-      <a class="brand" href="#">小岛渔事<span>ISLAND HOURS / 01</span></a>
-      <div class="wallet">
-        <span id="rod-label">入门鱼竿</span><b>◈ <span id="coins">0</span></b
-        ><button id="sound" title="切换音效">音效 开</button
-        ><button id="help">操作说明</button>
+      <div class="brand">
+        小岛渔事 <span>ISLAND HOURS · 物理交互重建版</span>
       </div>
+      <nav>
+        <span id="net-badge">单人</span><b id="coins">◈ 0</b
+        ><button id="menu-button">菜单 Esc</button>
+      </nav>
     </header>
-    <aside class="quest">
-      <div class="eyebrow">今日 · 海风正好</div>
-      <h2 id="quest-title">从第一条鱼开始。</h2>
-      <p id="quest-desc">去前方木码头，抛出你的第一竿。</p>
-      <div class="steps">
-        <span id="step-catch">01 捕获</span
-        ><span id="step-upgrade">02 升级</span
-        ><span id="step-legend">03 金鳍</span>
-      </div>
-      <button id="travel">前往钓场 →</button>
+    <aside id="quest">
+      <small id="island-name">白岛 · 灯塔</small>
+      <h2 id="quest-title">寻找回家的路</h2>
+      <p id="quest-text"></p>
+      <div id="island-dots"></div>
+      <small>原版机制重建进行中 · 完整还原尚未完成</small>
     </aside>
     <div id="crosshair">+</div>
     <div id="toast" role="status"></div>
-    <section id="fight" class="hidden">
-      <div class="fight-top">
-        <b id="fish-name"></b><span id="fish-mood"></span>
-      </div>
-      <label>收线进度 <span id="progress-value"></span></label>
-      <div class="meter"><i id="progress-bar"></i></div>
-      <label>鱼线张力 <span id="tension-value"></span></label>
-      <div class="meter tension"><i id="tension-bar"></i></div>
-      <p>按住 空格 / 左键 收线，或用下方按钮切换 · 张力满格会跑鱼</p>
-    </section>
-    <footer>
-      <div>
-        <span class="eyebrow" id="place">木码头 / SHORELINE</span>
-        <p id="hint">走到码头尽头，面朝大海。</p>
-      </div>
-      <button id="action">抛竿 <kbd>E</kbd></button>
-    </footer>
-    <div class="bag">
-      <span>鱼篓</span><b id="bag-count">0 条</b
-      ><span id="bag-value">价值 0 ◈</span>
+    <div id="target"></div>
+    <div id="boss" hidden>
+      <strong id="boss-name"></strong>
+      <div class="bar"><i id="boss-bar"></i></div>
+      <span id="boss-phase"></span>
     </div>
-    <dialog id="welcome">
-      <div class="eyebrow">一段小小的海岛假期</div>
-      <h1>海风吹过，<br />今天钓点什么？</h1>
-      <p>
-        一座岛，一根竿。从第一条小鱼开始，<br />赚够金币升级鱼竿，找一找海里的金色传说。
-      </p>
-      <div class="instructions">
-        <span><b>W A S D</b> 移动</span
-        ><span><b>拖动鼠标 / 方向键</b> 看向</span
-        ><span><b>E / 底部按钮</b> 抛竿、交互</span
-        ><span><b>空格 / 左键</b> 提竿、收线、敲鱼</span>
+    <div id="damage-overlay"></div>
+    <div id="vitals">
+      <span>生命 <b id="hp">100</b></span>
+      <div class="bar"><i id="hp-bar"></i></div>
+      <span>饱腹 <b id="hunger">100</b></span>
+      <div class="bar hunger"><i id="hunger-bar"></i></div>
+      <small id="ammo"></small>
+    </div>
+    <footer>
+      <div id="hotbar">
+        <button data-slot="rod">1 鱼竿</button
+        ><button id="weapon-slot">2 空手</button
+        ><button id="bag-button">背包 Tab</button
+        ><button id="radar-button">雷达 M</button
+        ><button id="inspect-button">检查 F</button>
       </div>
-      <button id="start" class="primary">去海边走走 →</button
-      ><small>电脑浏览器体验 · 自动保存金币与鱼篓 · Esc 暂停</small>
+      <p id="hint">WASD 移动 · 空格跳跃 · E 拿取 / 交互 · Q 丢弃 / 长按投掷</p>
+      <div id="actions">
+        <button id="primary">抛竿</button
+        ><button id="interact">拿取 / 交互 E</button
+        ><button id="reel" hidden>开始收线</button
+        ><button id="release" hidden>放鱼</button
+        ><button id="drop" hidden>丢弃</button
+        ><button id="throw" hidden>投掷</button
+        ><button id="stash" hidden>收纳</button
+        ><button id="eat" hidden>食用</button>
+      </div>
+    </footer>
+    <dialog id="menu">
+      <div class="eyebrow">FIRST-PERSON PHYSICS FISHING</div>
+      <h1>出海，<br />找一条回家的路。</h1>
+      <p>
+        从灯塔到火山。钓起实体鱼获，拿取、投掷、处理和出售。完成岛民的委托，击败首领，驾船探索五座岛。
+      </p>
+      <div class="control-grid">
+        <span><b>WASD / Shift / 空格</b>走动 / 奔跑 / 跳跃</span
+        ><span><b>鼠标 / 方向键</b>点击场景锁定视角，也可拖动或按键转向</span
+        ><span><b>左键 / 右键</b>抛竿、收线、攻击 / 放鱼、瞄准</span
+        ><span><b>E / Q / G / C</b>拿取交互 / 丢弃投掷 / 收纳 / 食用</span>
+      </div>
+      <button id="play" class="primary">进入海岛</button>
+      <div class="menu-row">
+        <button id="room-button">联机房间</button
+        ><button id="sound">音效：开</button>
+      </div>
+      <small>本版重建五岛机制，数值与场景仍在对照打磨。存档与旧版独立。</small>
+    </dialog>
+    <dialog id="inventory">
+      <div class="eyebrow">BACKPACK & FIELD NOTES</div>
+      <h2>背包与装备</h2>
+      <div id="inventory-stats"></div>
+      <h3>武器</h3>
+      <div id="weapons" class="grid"></div>
+      <h3>鱼饵</h3>
+      <div id="lures" class="grid"></div>
+      <h3>背包 <small>点击取到手上</small></h3>
+      <div id="pocket" class="grid"></div>
+      <h3>图鉴 <small id="collection-count"></small></h3>
+      <div id="collection" class="collection"></div>
+      <button data-close="inventory">返回游戏</button>
     </dialog>
     <dialog id="shop">
-      <div class="eyebrow">码头小铺 / THE FISH MARKET</div>
-      <h2>今天收获不错嘛。</h2>
-      <p id="shop-info"></p>
-      <button id="sell" class="primary">卖出全部渔获</button>
-      <div class="upgrade">
-        <div>
-          <b>潮汐鱼竿</b>
-          <p>收线更快、鱼线更稳<br />解锁金鳍王的踪迹</p>
-        </div>
-        <button id="buy">购买 · 90 ◈</button>
-      </div>
-      <button id="close-shop">回到海边 →</button>
+      <div class="eyebrow">THE ISLAND TRADER</div>
+      <h2>买点趁手的家伙。</h2>
+      <p>
+        拿着死鱼来出售，也可以把它投进商人的嘴里。花式击杀和烹饪会影响售价。
+      </p>
+      <button id="sell-held" class="primary">出售手持渔获</button>
+      <div id="shop-items" class="grid"></div>
+      <button data-close="shop">离开商店</button>
     </dialog>
-    <dialog id="victory">
-      <div class="eyebrow">海岛手记 / 一页完成</div>
-      <h1>你钓到了<br />金色的传说。</h1>
-      <p>金鳍王已经进入鱼篓。<br />这片小岛的第一段冒险，圆满了。</p>
-      <button id="continue" class="primary">再享受一会海风 →</button>
+    <dialog id="radar">
+      <div class="eyebrow">NAVIGATION / BOAT</div>
+      <h2>海图</h2>
+      <p id="radar-text">需要船钥匙，且必须在码头小船旁上船，才能启航。</p>
+      <div id="destinations"></div>
+      <button id="board">上船 / 下船</button
+      ><button data-close="radar">收起海图</button>
+    </dialog>
+    <dialog id="inspect">
+      <div class="eyebrow">ITEM INSPECTION</div>
+      <h2 id="inspect-name"></h2>
+      <div id="inspect-info"></div>
+      <button data-close="inspect">收起</button>
+    </dialog>
+    <dialog id="room">
+      <div class="eyebrow">CO-OP / 1—4 PLAYERS</div>
+      <h2>一起出海。</h2>
+      <p>房主负责模拟世界。房主需要保持游戏页面打开，队友共享金币和任务。</p>
+      <button id="create-room" class="primary">创建房间</button
+      ><label for="room-code">房间码</label>
+      <div class="menu-row">
+        <input
+          id="room-code"
+          maxlength="6"
+          placeholder="6 位房间码"
+          autocomplete="off"
+        /><button id="join-room">加入</button>
+      </div>
+      <p id="room-status" role="status">尚未连接</p>
+      <small
+        >使用 WebRTC /
+        公共信令。部分网络的直连可能失败；失败时可继续单人游戏。</small
+      ><button id="solo">返回单人模式</button
+      ><button data-close="room">返回游戏</button>
+    </dialog>
+    <dialog id="death">
+      <div class="eyebrow">WASHED ASHORE</div>
+      <h2>海浪还会把你送回来。</h2>
+      <p>队友可靠近按 H 扶起你；也可以在码头复活。随身物品掉落在倒下的位置。</p>
+      <button id="respawn" class="primary">回码头复活</button>
+    </dialog>
+    <dialog id="ending">
+      <div class="eyebrow">THE WAY HOME</div>
+      <h1>这一次，<br />真的启航了。</h1>
+      <p>
+        最终战利品已交付，救援船钥匙已经到手。五岛主线完成；你仍可留在海岛探索。
+      </p>
+      <button data-close="ending" class="primary">继续探索</button>
     </dialog>
   </body>
 </html>
