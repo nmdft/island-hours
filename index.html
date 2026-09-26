@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#143e43" />
+    <title>小岛渔事 · Island Hours</title>
+    <script type="module" crossorigin src="./assets/index-Drr9Z2ru.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DpxhTryN.css">
+  </head>
+  <body>
+    <canvas id="world" aria-label="第一人称海岛钓鱼场景"></canvas>
+    <header>
+      <a class="brand" href="#">小岛渔事<span>ISLAND HOURS / 01</span></a>
+      <div class="wallet">
+        <span id="rod-label">入门鱼竿</span><b>◈ <span id="coins">0</span></b
+        ><button id="sound" title="切换音效">音效 开</button
+        ><button id="help">操作说明</button>
+      </div>
+    </header>
+    <aside class="quest">
+      <div class="eyebrow">今日 · 海风正好</div>
+      <h2 id="quest-title">从第一条鱼开始。</h2>
+      <p id="quest-desc">去前方木码头，抛出你的第一竿。</p>
+      <div class="steps">
+        <span id="step-catch">01 捕获</span
+        ><span id="step-upgrade">02 升级</span
+        ><span id="step-legend">03 金鳍</span>
+      </div>
+      <button id="travel">前往钓场 →</button>
+    </aside>
+    <div id="crosshair">+</div>
+    <div id="toast" role="status"></div>
+    <section id="fight" class="hidden">
+      <div class="fight-top">
+        <b id="fish-name"></b><span id="fish-mood"></span>
+      </div>
+      <label>收线进度 <span id="progress-value"></span></label>
+      <div class="meter"><i id="progress-bar"></i></div>
+      <label>鱼线张力 <span id="tension-value"></span></label>
+      <div class="meter tension"><i id="tension-bar"></i></div>
+      <p>按住 空格 / 左键 收线，或用下方按钮切换 · 张力满格会跑鱼</p>
+    </section>
+    <footer>
+      <div>
+        <span class="eyebrow" id="place">木码头 / SHORELINE</span>
+        <p id="hint">走到码头尽头，面朝大海。</p>
+      </div>
+      <button id="action">抛竿 <kbd>E</kbd></button>
+    </footer>
+    <div class="bag">
+      <span>鱼篓</span><b id="bag-count">0 条</b
+      ><span id="bag-value">价值 0 ◈</span>
+    </div>
+    <dialog id="welcome">
+      <div class="eyebrow">一段小小的海岛假期</div>
+      <h1>海风吹过，<br />今天钓点什么？</h1>
+      <p>
+        一座岛，一根竿。从第一条小鱼开始，<br />赚够金币升级鱼竿，找一找海里的金色传说。
+      </p>
+      <div class="instructions">
+        <span><b>W A S D</b> 移动</span
+        ><span><b>拖动鼠标 / 方向键</b> 看向</span
+        ><span><b>E / 底部按钮</b> 抛竿、交互</span
+        ><span><b>空格 / 左键</b> 提竿、收线、敲鱼</span>
+      </div>
+      <button id="start" class="primary">去海边走走 →</button
+      ><small>电脑浏览器体验 · 自动保存金币与鱼篓 · Esc 暂停</small>
+    </dialog>
+    <dialog id="shop">
+      <div class="eyebrow">码头小铺 / THE FISH MARKET</div>
+      <h2>今天收获不错嘛。</h2>
+      <p id="shop-info"></p>
+      <button id="sell" class="primary">卖出全部渔获</button>
+      <div class="upgrade">
+        <div>
+          <b>潮汐鱼竿</b>
+          <p>收线更快、鱼线更稳<br />解锁金鳍王的踪迹</p>
+        </div>
+        <button id="buy">购买 · 90 ◈</button>
+      </div>
+      <button id="close-shop">回到海边 →</button>
+    </dialog>
+    <dialog id="victory">
+      <div class="eyebrow">海岛手记 / 一页完成</div>
+      <h1>你钓到了<br />金色的传说。</h1>
+      <p>金鳍王已经进入鱼篓。<br />这片小岛的第一段冒险，圆满了。</p>
+      <button id="continue" class="primary">再享受一会海风 →</button>
+    </dialog>
+  </body>
+</html>
