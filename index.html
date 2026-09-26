@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#142c35" />
     <title>小岛渔事 · 五岛航行</title>
-    <script type="module" crossorigin src="./assets/index-CYpBGQgo.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-Du2fz0iy.css">
+    <script type="module" crossorigin src="./assets/index-DFjLehTO.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-D6tq-tJf.css">
   </head>
   <body>
     <canvas id="world" tabindex="0" aria-label="海岛物理钓鱼场景"></canvas>
@@ -28,6 +28,8 @@
       <small>原版机制重建进行中 · 完整还原尚未完成</small>
     </aside>
     <div id="crosshair">+</div>
+    <div id="boat-hud" hidden></div>
+    <div id="scope-overlay" hidden></div>
     <div id="toast" role="status"></div>
     <div id="target"></div>
     <div id="boss" hidden>
@@ -109,7 +111,9 @@
     <dialog id="radar">
       <div class="eyebrow">NAVIGATION / BOAT</div>
       <h2>海图</h2>
-      <p id="radar-text">需要船钥匙，且必须在码头小船旁上船，才能启航。</p>
+      <p id="radar-text">
+        靠近小船上船后，用 W/S 加减速、A/D 转向。雷达用于标记目的地。
+      </p>
       <div id="destinations"></div>
       <button id="board">上船 / 下船</button
       ><button data-close="radar">收起海图</button>
