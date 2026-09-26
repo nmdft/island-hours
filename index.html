@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#142c35" />
     <title>小岛渔事 · 五岛航行</title>
-    <script type="module" crossorigin src="./assets/index-DFjLehTO.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-D6tq-tJf.css">
+    <script type="module" crossorigin src="./assets/index-Bc-8_edq.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CYNY0dME.css">
   </head>
   <body>
     <canvas id="world" tabindex="0" aria-label="海岛物理钓鱼场景"></canvas>
@@ -94,6 +94,8 @@
       <div id="lures" class="grid"></div>
       <h3>背包 <small>点击取到手上</small></h3>
       <div id="pocket" class="grid"></div>
+      <h3>涂装收藏 <small>鱼竿 · 武器 · 小船，共享装备</small></h3>
+      <div id="skins" class="skin-grid"></div>
       <h3>图鉴 <small id="collection-count"></small></h3>
       <div id="collection" class="collection"></div>
       <button data-close="inventory">返回游戏</button>
@@ -144,6 +146,16 @@
         公共信令。部分网络的直连可能失败；失败时可继续单人游戏。</small
       ><button id="solo">返回单人模式</button
       ><button data-close="room">返回游戏</button>
+    </dialog>
+    <dialog id="casino">
+      <div class="eyebrow">REEL OF FORTUNE</div>
+      <h2>潮汐游艺亭</h2>
+      <p>拿着渔获下注，中奖后拿奖品去商人处出售。珍品鱼也可兑换随机涂装。</p>
+      <div class="wheel-stage"><span class="wheel-pointer">▼</span><div id="fortune-wheel"></div><div class="wheel-hub">潮<br>汐</div></div>
+      <p id="casino-result" role="status">37 格轮盘 · 绿格 ×35 · 红 / 黑 ×2</p>
+      <div id="casino-actions" class="row"></div>
+      <small>红/黑各 18/37，绿 1/37；5 款涂装各 20%。每次消耗手持鱼，未中奖则失去该鱼；重复涂装返还鱼的价值。</small>
+      <button data-close="casino">返回游戏</button>
     </dialog>
     <dialog id="death">
       <div class="eyebrow">WASHED ASHORE</div>
