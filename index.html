@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#142c35" />
     <title>小岛渔事 · 五岛航行</title>
-    <script type="module" crossorigin src="./assets/index-d4sEKnVg.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-_9ezfkfs.css">
+    <script type="module" crossorigin src="./assets/index-Dcsg48P6.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/rapier-CKC5f6tm.js">
+    <link rel="modulepreload" crossorigin href="./assets/three-CQH5_qPh.js">
+    <link rel="modulepreload" crossorigin href="./assets/peerjs-Dt2ks6Iu.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-5-6POOzA.css">
   </head>
   <body>
     <canvas id="world" tabindex="0" aria-label="海岛物理钓鱼场景"></canvas>
+    <div id="touch-move" aria-label="移动摇杆"><span id="touch-knob"></span><small>移动</small></div>
     <div id="loading">正在装载海岛与物理世界……</div>
     <header>
       <div class="brand">
@@ -58,7 +62,7 @@
         <button id="primary">抛竿</button
         ><button id="interact">拿取 / 交互 E</button
         ><button id="reel" hidden>开始收线</button
-        ><button id="swim-jump" hidden>跃出水面</button><button id="water-rescue" hidden>落水救援 · 返回码头</button>
+        ><button id="touch-jump">跳跃</button><button id="swim-jump" hidden>跃出水面</button><button id="water-rescue" hidden>落水救援 · 返回码头</button>
       <button id="release" hidden>放鱼</button
         ><button id="drop" hidden>丢弃</button
         ><button id="throw" hidden>投掷</button
@@ -83,6 +87,25 @@
         <button id="room-button">联机房间</button
         ><button id="sound">音效：开</button>
       </div>
+      <label for="quality">画质</label>
+      <select id="quality" aria-describedby="quality-note">
+        <option value="standard">标准 · 阴影与高清画面</option>
+        <option value="low">低 · 关闭阴影，限制渲染分辨率</option>
+      </select>
+      <small id="quality-note" role="status">画面卡顿时可选择低画质；立即生效，无需重启。</small>
+      <label for="look-sensitivity">鼠标 / 拖动视角灵敏度</label>
+      <select id="look-sensitivity" aria-describedby="look-sensitivity-note">
+        <option value="low">低 · 0.5 倍</option>
+        <option value="standard">标准 · 1 倍</option>
+        <option value="high">高 · 1.5 倍</option>
+      </select>
+      <small id="look-sensitivity-note" role="status">只影响鼠标/拖动，方向键速度不变；立即生效，无需重启。</small>
+      <h3>本地存档备份</h3>
+      <p>备份当前五岛进度和随身已处理物品。导入会覆盖 v2 存档并重新加载；建议先导出当前存档。旧版 v1 存档保持不变。仅单人正式游戏可用。</p>
+      <div class="menu-row"><button id="save-export">导出备份</button><button id="save-import">选择备份文件</button></div>
+      <input id="save-file" type="file" accept=".json,application/json" hidden />
+      <p id="save-status" role="status"></p>
+      <button id="save-apply" hidden>覆盖当前 v2 存档并重新加载</button>
       <small>本版重建五岛机制，数值与场景仍在对照打磨。存档与旧版独立。</small>
     </dialog>
     <dialog id="inventory">
@@ -99,6 +122,9 @@
       <div id="skins" class="skin-grid"></div>
       <h3>图鉴 <small id="collection-count"></small></h3>
       <div id="collection" class="collection"></div>
+      <h3>成就 <small id="achievement-count"></small></h3>
+      <p>当前已接入成就 · 达成记录与房间主线共享，保存在房主存档中。</p>
+      <div id="achievements" class="collection"></div>
       <button data-close="inventory">返回游戏</button>
     </dialog>
     <dialog id="shop">
